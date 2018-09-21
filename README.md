@@ -19,7 +19,6 @@ e.g.: You want to sync a folder in Documents, you add in LOCAL or REMOTE:
 LOCAL=$HOME/Documents
 </pre>
 
-The script will ask you for a project name and you tell him as name: test, the script 
-will send this to: $HOME/Documents/test/
+The script will ask you for a project name and you answer: test, it will be send this to: $HOME/Documents/test/
 
  
