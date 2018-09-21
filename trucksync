@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# trucksync 
+
+# Colors
+ESC_SEQ="\x1b["
+COL_RESET="\e[0m"
+COL_RED="\e[31m"
+COL_GREEN="\e[32m"
+COL_YELLOW="\e[33m"
+COL_LBLUE="\e[94m"
+
+# Variables
+WHOAMI=$(whoami)
+OPT="-artuvz --delete"
+LOCAL="/where/is/located/you/file"
+REMOTE="/where/it/neet/to/go"
+TITLE1="Welcome to truck rsync"
+MENU1="[ 1 ] Sync from local to remote?"
+MENU2="[ 2 ] Sync from remote to local?"
+MENU0="[ 0 ] exit?"
+TEXT1="Please give the project name?"
+TEXT2="Is this correct?"
+TEXT3="Please answer yes or no."
+TEXT4="Game Over! Please retry :-)"
+
+
+function badinput(){
+  printf "\n $COL_RED $TEXT4 $COL_RESET \n" && sleep 1
+  trucksync
+}
+
+function trucksync(){
+echo   "--------------------------------------------------------------------------"
+printf "                 $COL_LBLUE $TITLE1 $COL_RESET \n"
+echo   "--------------------------------------------------------------------------"
+printf "$MENU1 \n"
+printf "$MENU2 \n"
+printf "$MENU0 \n" 
+printf "> "
+read source_choice
+echo   "--------------------------------------------------------------------------"
+
+if [ $source_choice -eq 1 ]; then 
+    	printf "$TEXT1 \n"
+      read -p "Enter: " PROJECT
+      echo   "--------------------------------------------------------------------------"
+      printf "$COL_GREEN $TEXT2 $COL_RESET\n"
+      echo   "--------------------------------------------------------------------------"
+      printf "$COL_YELLOW $LOCAL/$PROJECT/  $REMOTE/$PROJECT? $COL_RESET \n"
+      printf "$TEXT3 \n"
+      read -p "Enter: " yn
+    
+case $yn in
+      [Yy]* ) rsync $OPT $LOCAL/$PROJECT/  $REMOTE/$PROJECT && sleep 2 && clear;;
+      [Nn]* ) clear ;;
+      * ) printf "$COL_RED $TEXT4 $COL_RESET" && sleep 1 && clear;;
+ esac
+      trucksync
+
+elif [ $source_choice -eq 2 ]; then 
+    	printf "$TEXT1 \n"
+      read -p "Enter: " PROJECT
+      echo   "--------------------------------------------------------------------------"
+      printf "$TEXT2 \n"
+      echo   "--------------------------------------------------------------------------"         
+      printf "$COL_YELLOW $REMOTE/$PROJECT/ $LOCAL/$PROJECT? $COL_RESET \n "
+      printf "$TEXT3 \n"
+      read -p "Enter: " yn                                                               
+                
+case $yn in    
+      [Yy]* ) rsync $OPT $REMOTE/$PROJECT/ $LOCAL/$PROJECT && sleep 2 && clear;; 
+      [Nn]* ) clear ;;
+      * ) printf "$COL_RED $TEXT4 $COL_RESET" && sleep 1 && clear;;
+esac          
+      trucksync
+
+elif [ $source_choice -eq 0 ];then
+    	exit 0
+
+ else
+      badinput
+  fi                                                                                     
+
+}
+
+clear; trucksync
